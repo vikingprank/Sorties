@@ -8,22 +8,26 @@
 <table>
   <thead>
     <tr>
+      <th>ID en BDD</th>
       <th>Nom</th>
       <th>Date de la Sortie</th>
       <th>Date de fin des inscriptions</th>
       <th>Nombre de places</th>
       <th>Organisateur</th>
       <th>Etat</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr>
+      <td>{{sortie.id}}</td>
       <td>{{sortie.nom}}</td>
       <td>{{sortie.dateSortie|date("d/m/Y")}}</td>
       <td>{{sortie.dateFinInscription|date("d/m/Y")}}</td>
       <td>{{sortie.nombrePlaces}}</td>
       <td>{{sortie.organisateur}}</td>
       <td>{{sortie.etat.label}}</td>
+      <td><a href="{{ path('sortie_participer', {'id' : sortie.id}) }}">Participer</a></td>
     </tr>
   </tbody>
 </table>

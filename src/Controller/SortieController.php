@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,5 +44,23 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/create.html.twig', ["sortieForm" => $sortieForm->createView()]);
+    }
+    /**
+     * @Route("/sortie/participer/{id}", name="sortie_participer")
+     */
+    public function participer($id, SortieRepository $sr, EntityManagerInterface $em): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        $sortie->getParticipants()->add($user);
+        $user->getSorties()->add($sortie);
+
+        $em->flush();
+        
+        return $this->render('main/home.html.twig', []);
     }
 }
