@@ -5,12 +5,13 @@
 		<li><a href={{path('sortie_create')}} title="Créer une sortie">Poster</a></li>
 		<li><a href={{path('main_aboutUs')}} title="A propos de nous">Notre mission</a></li>
 		<li><a href={{path('app_register')}} title="Register">Inscription</a></li>
+		{% if app.user is empty %}
 		<li><a href={{path('app_login')}} title="login">Connexion</a></li>
+		{% endif %}
+		{% if app.user %}
+        <li>
+          <a href="{{ path('app_logout') }}">Logout</a>
+				</li>
+		{% endif %}
 	</ul>
-{% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-
 </nav>
