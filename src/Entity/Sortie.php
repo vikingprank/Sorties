@@ -43,11 +43,6 @@ class Sortie
     private $nombrePlaces;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $etat;
-
-    /**
      * @ORM\Column(type="string", length=50)
      */
     private $organisateur;
@@ -56,6 +51,12 @@ class Sortie
      * @ORM\Column(type="datetime")
      */
     private $dateCreation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etat;
 
     public function getId(): ?int
     {
@@ -122,18 +123,6 @@ class Sortie
         return $this;
     }
 
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(string $etat): self
-    {
-        $this->etat = $etat;
-
-        return $this;
-    }
-
     public function getOrganisateur(): ?string
     {
         return $this->organisateur;
@@ -154,6 +143,18 @@ class Sortie
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

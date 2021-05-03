@@ -26,7 +26,7 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
         $sortie -> setDateCreation(new \DateTime());
-        $sortie -> setEtat(1);
+        //$sortie -> setEtat(1);
 
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
         $sortieForm -> handleRequest($request);
