@@ -3,5 +3,29 @@
 {% block title %}Sorties | {{ parent() }}{% endblock %}
 
 {% block body %}
-<h1>SORTIE</h1>
+<h3>Affichage des sorties en BDD</h3>
+{% for sortie in sorties %}
+<table>
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Date de la Sortie</th>
+      <th>Date de fin des inscriptions</th>
+      <th>Nombre de places</th>
+      <th>Organisateur</th>
+      <th>Etat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{sortie.nom}}</td>
+      <td>{{sortie.dateSortie|date("d/m/Y")}}</td>
+      <td>{{sortie.dateFinInscription|date("d/m/Y")}}</td>
+      <td>{{sortie.nombrePlaces}}</td>
+      <td>{{sortie.organisateur}}</td>
+      <td>{{sortie.etat.label}}</td>
+    </tr>
+  </tbody>
+</table>
+{% endfor %}
 {% endblock %}
