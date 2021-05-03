@@ -66,4 +66,9 @@ nav li {
 .alert-succes {
   background-color: greenyellow;
   color: black;
+  padding: 20px;
+}
+
+.alert-danger {
+  background-color: darkred;
 }
