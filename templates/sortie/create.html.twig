@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sorties | {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1>Création d'une sortie</h1>
+
+{{ form_start(sortieForm) }}
+{{ form_widget(sortieForm) }}
+<button>Poster la sortie</button>
+{{ form_end(sortieForm) }}
+
+{% endblock %}
