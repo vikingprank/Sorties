@@ -44,9 +44,18 @@ nav ul {
   padding-left: 0;
 }
 
-label { display: block; }
+label {
+  display: block;
+}
 
-input, textarea, select { margin-bottom: 1rem; box-sizing: border-box; width: 150px; max-width: 50%}
+input,
+textarea,
+select {
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  width: 150px;
+  max-width: 50%;
+}
 
 nav li {
   margin-right: 1rem;
@@ -83,15 +92,17 @@ nav li {
   border-radius: 10px;
 }
 
-th, td {
+th,
+td {
   border-bottom: 1px solid #ddd;
 }
 
 tr:hover {
   background-color: #f5f5f528;
-} 
+}
 
 table {
+<<<<<<< HEAD:public/css/app.css
   table-layout:auto;
 }
 
@@ -102,3 +113,9 @@ table {
   margin: 10px;
   border-radius: 10px;
 }
+=======
+  table-layout: auto;
+}
+
+@import "~bootstrap/scss/bootstrap";
+>>>>>>> 824d52cc09273b6bbfb6909231954e8dba2cb589:public/css/app.scss

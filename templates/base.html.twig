@@ -3,7 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Bienvenue sur Sorties.com!{% endblock %}</title>
-       <link rel="stylesheet" href={{ asset('css/app.css') }}>
+        {% block stylesheets %}
+             <link rel="stylesheet" href={{ asset('css/app.scss') }}>
+        {% endblock %}
+      
     </head>
     <body>
         <div class="container">
