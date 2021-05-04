@@ -31,6 +31,8 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
         $sortie -> setDateCreation(new \DateTime());
+        $prenomUserConnected = $this->getUser()->getPrenom();
+        $sortie -> setOrganisateur($prenomUserConnected);
 
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
         $sortieForm -> handleRequest($request);

@@ -19,7 +19,7 @@ class SortieType extends AbstractType
             ->add('dateSortie')
             ->add('dateFinInscription')
             ->add('nombrePlaces')
-            ->add('organisateur')
+            //->add('organisateur')
             ->add('etat', EntityType::class, ['class'=>Etat::class, 'choice_label' => 'label'])
         ;
     }
