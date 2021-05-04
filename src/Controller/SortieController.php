@@ -60,7 +60,31 @@ class SortieController extends AbstractController
         $user->getSorties()->add($sortie);
 
         $em->flush();
+
+        $this -> addFlash ('succes', 'Tu participes à la sortie!');
+        //reaffichage du SELECT *
+        $sorties = $sr->findAll();
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+    }
+    /**
+     * @Route("/sortie/se_desister/{id}", name="sortie_se_desister")
+     */
+    public function seDesister($id, SortieRepository $sr, EntityManagerInterface $em): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        $sortie->removeParticipant($user);
+        $user->removeSorty($sortie);
+
+        $em->flush();
         
-        return $this->render('main/home.html.twig', []);
+        $this -> addFlash ('succes', 'Dommage que tu ne puisse pas venir!');
+        //reaffichage du SELECT *
+        $sorties = $sr->findAll();
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
     }
 }

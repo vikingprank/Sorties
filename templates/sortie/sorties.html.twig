@@ -27,7 +27,10 @@
       <td>{{sortie.nombrePlaces}}</td>
       <td>{{sortie.organisateur}}</td>
       <td>{{sortie.etat.label}}</td>
-      <td><a href="{{ path('sortie_participer', {'id' : sortie.id}) }}">Participer</a></td>
+      <td>
+      <a href="{{ path('sortie_participer', {'id' : sortie.id}) }}">Participer</a>
+      <a href="{{ path('sortie_se_desister', {'id' : sortie.id}) }}">Se desister</a>
+      </td>
     </tr>
 {% endfor %}
   </tbody>
