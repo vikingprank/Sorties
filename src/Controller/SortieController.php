@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SortieType;
+use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,11 +20,43 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie", name="sortie_liste")
      */
-    public function sorties(SortieRepository $sr): Response
+    public function sorties(SortieRepository $sr, CampusRepository $cr): Response
     {
         $sorties = $sr->findAll();
+        $campus = $cr->findAll();
 
-        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+    }
+    /**
+     * @Route("/sortie_by_campus/{id}", name="sortie_by_campus")
+     */
+    public function sortiesByCampus($id, SortieRepository $sr, CampusRepository $cr): Response
+    {
+        //$sorties = $sr->findSortiesByCampus($id);
+        $sorties = $sr->findAll();
+        
+        $index = 0;
+        foreach ($sorties as $sortie) {
+            if ($sortie->getCampus()->getId() != $id) {
+                array_splice($sorties, $index, 1);
+            }
+            $index++;
+        }
+        
+        //dd($sorties);
+        //pour le re-affichage du filtre
+        $campus = $cr->findAll();
+
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+    }
+    /**
+     * @Route("/sortie/detail/{id}", name="sortie_detail")
+     */
+    public function detail($id, SortieRepository $sr): Response
+    {
+        $sortie = $sr->find($id);
+
+        return $this->render('sortie/detail.html.twig', ["sortie" => $sortie]);
     }
     /**
      * @Route("/sortie/create", name="sortie_create")
@@ -49,7 +83,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/participer/{id}", name="sortie_participer")
      */
-    public function participer($id, SortieRepository $sr, EntityManagerInterface $em): Response
+    public function participer($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
     {
         $sortie = new Sortie();
         $user = new User();
@@ -64,18 +98,22 @@ class SortieController extends AbstractController
         } else {
             $this -> addFlash ('warning', 'Tu participes déjà à cette sortie!');
             $sorties = $sr->findAll();
-            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+            $campus = $cr->findAll();
+
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
         }
 
         $this -> addFlash ('succes', 'Tu participes à la sortie!');
         //reaffichage du SELECT *
         $sorties = $sr->findAll();
-        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+        $campus = $cr->findAll();
+
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
     }
     /**
      * @Route("/sortie/se_desister/{id}", name="sortie_se_desister")
      */
-    public function seDesister($id, SortieRepository $sr, EntityManagerInterface $em): Response
+    public function seDesister($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
     {
         $sortie = new Sortie();
         $user = new User();
@@ -90,12 +128,51 @@ class SortieController extends AbstractController
         } else {
             $this -> addFlash ('warning', 'Tu ne peut pas de desister si tu ne participes pas!');
             $sorties = $sr->findAll();
-            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+            $campus = $cr->findAll();
+
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
         }
         
         $this -> addFlash ('succes', 'Dommage que tu ne puisse pas venir!');
         //reaffichage du SELECT *
         $sorties = $sr->findAll();
-        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+        $campus = $cr->findAll();
+
+        return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+    }
+    /**
+     * @Route("/sortie/modifier/{id}", name="sortie_modifier")
+     */
+    public function modifier($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em, Request $request): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        if ($user->getPrenom() != $sortie->getOrganisateur()) {
+            $this -> addFlash ('warning', 'Tu ne peut pas modifier cette sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        } else {
+        
+            $sortieForm = $this -> createForm(SortieType::class, $sortie);
+            $sortieForm -> handleRequest($request);
+            
+            if ($sortieForm->isSubmitted()) {
+                $em->persist($sortie);
+                $em->flush();
+                $this -> addFlash ('succes', 'Sortie mis à jour!');
+                return $this -> redirectToRoute('main_home');
+            }
+
+            return $this->render('sortie/modifier.html.twig', ["sortie"=>$sortie, "sortieForm" => $sortieForm->createView()]);
+        }
+
+
     }
 }
