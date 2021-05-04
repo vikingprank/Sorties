@@ -55,7 +55,7 @@
       {% else %}
       <a href="{{ path('app_login') }}">Connecte-toi pour participer!</a>
       {% endif %}
-      {% if app.user and app.user.prenom == sortie.organisateur %}
+      {% if app.user and app.user.pseudo == sortie.organisateur %}
       <a href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">Modifier</a>
       {% endif %}
       </td>
