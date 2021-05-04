@@ -4,11 +4,28 @@
 
 {% block body %}
 <h3>Affichage des sorties en BDD</h3>
+
+
+<label for="campus-select">Filter sur un campus</label>
+  <select name="campus" id="campus-select">
+      <option value="">--Liste des campus--</option>
+      {% for campus in campus %}
+      <option value=""{{ path('sortie_by_campus', {'id' : campus.id}) }}"">{{campus.nom}}</option>
+      {% endfor %}
+  </select>
+<input type="submit" value="Filtrer par ce campus">
+
+
+{% for campus in campus %}
+<a href="{{ path('sortie_by_campus', {'id' : campus.id}) }}">{{campus.nom}}</a>
+{% endfor %}
+
 <table>
   <thead>
     <tr>
       <th>ID en BDD</th>
       <th>Nom</th>
+      <th>Campus</th>
       <th>Date de la Sortie</th>
       <th>Date de fin des inscriptions</th>
       <th>Nombre de places</th>
@@ -22,6 +39,7 @@
     <tr>
       <td>{{sortie.id}}</td>
       <td>{{sortie.nom}}</td>
+      <td>{{sortie.campus.nom}}</td>
       <td>{{sortie.dateSortie|date("d/m/Y")}}</td>
       <td>{{sortie.dateFinInscription|date("d/m/Y")}}</td>
       <td>{{sortie.participants|length}}/{{sortie.nombrePlaces}}</td>

@@ -47,4 +47,12 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findSortiesByCampus($id){
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->andWhere('s.campus_id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
