@@ -6,18 +6,20 @@
        <link rel="stylesheet" href={{ asset('css/app.css') }}>
     </head>
     <body>
-    <header>
-    <h1>
-		<a href="{{ path('main_home') }}"><img src="{{ asset('img/Sorties.jpg') }}" alt="Sorties!"></h1>
+        <div class="container">
+        <header>
+            <h1>
+                <a href="{{ path('main_home') }}"><img src="{{ asset('img/Sorties.jpg') }}" alt="Sorties!"></h1>
 
-    {% for label, messages in app.flashes %} 
-        {% for message in messages %} 
-            <div class="alert-{{label}}"> {{ message }} </div> 
-        {% endfor %} 
-    {% endfor %}
+            {% for label, messages in app.flashes %} 
+                {% for message in messages %} 
+                    <div class="alert-{{label}}"> {{ message }} </div> 
+                {% endfor %} 
+            {% endfor %}
 
-    {% include "inc/nav.html.twig" %}
-    </header>
-        {% block body %}{% endblock %}
+            {% include "inc/nav.html.twig" %}
+        </header>
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

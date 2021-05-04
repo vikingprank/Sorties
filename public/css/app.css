@@ -72,3 +72,15 @@ nav li {
 .alert-danger {
   background-color: darkred;
 }
+
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f5f5f528;
+} 
+
+table {
+  table-layout:auto;
+}

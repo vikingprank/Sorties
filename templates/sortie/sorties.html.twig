@@ -4,7 +4,6 @@
 
 {% block body %}
 <h3>Affichage des sorties en BDD</h3>
-{% for sortie in sorties %}
 <table>
   <thead>
     <tr>
@@ -19,6 +18,7 @@
     </tr>
   </thead>
   <tbody>
+{% for sortie in sorties %}
     <tr>
       <td>{{sortie.id}}</td>
       <td>{{sortie.nom}}</td>
@@ -29,7 +29,7 @@
       <td>{{sortie.etat.label}}</td>
       <td><a href="{{ path('sortie_participer', {'id' : sortie.id}) }}">Participer</a></td>
     </tr>
+{% endfor %}
   </tbody>
 </table>
-{% endfor %}
 {% endblock %}
