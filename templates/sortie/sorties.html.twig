@@ -3,7 +3,7 @@
 {% block title %}Sorties | {{ parent() }}{% endblock %}
 
 {% block body %}
-<h3>Affichage des sorties en BDD</h3>
+<h2>Les sorties en ligne:</h2>
 
 
 <label for="campus-select">Filter sur un campus</label>
@@ -55,7 +55,7 @@
       {% else %}
       <a href="{{ path('app_login') }}">Connecte-toi pour participer!</a>
       {% endif %}
-      {% if app.user.prenom == sortie.organisateur %}
+      {% if app.user and app.user.prenom == sortie.organisateur %}
       <a href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">Modifier</a>
       {% endif %}
       </td>

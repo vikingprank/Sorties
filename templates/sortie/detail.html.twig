@@ -3,9 +3,9 @@
 {% block title %}Modifier une sortie | {{ parent() }}{% endblock %}
 
 {% block body %}
-<h1>Detail d'une sortie</h1>
+<h2>Detail d'une sortie</h2>
 <article>
-<p>Sortie: {{sortie.nom}}</p>
+<h2>Sortie: {{sortie.nom}}</h2>
 <p>Date de la Sortie: {{sortie.dateSortie|date("d/m/Y")}}</p>
 <p>Date de fin d'Inscription: {{sortie.dateFinInscription|date("d/m/Y")}}</p>
 <p>Nombre de participants: {{sortie.participants|length}}/{{sortie.nombrePlaces}}</p>
