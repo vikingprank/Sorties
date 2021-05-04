@@ -44,9 +44,18 @@ nav ul {
   padding-left: 0;
 }
 
-label { display: block; }
+label {
+  display: block;
+}
 
-input, textarea, select { margin-bottom: 1rem; box-sizing: border-box; width: 150px; max-width: 50%}
+input,
+textarea,
+select {
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  width: 150px;
+  max-width: 50%;
+}
 
 nav li {
   margin-right: 1rem;
@@ -83,14 +92,17 @@ nav li {
   border-radius: 10px;
 }
 
-th, td {
+th,
+td {
   border-bottom: 1px solid #ddd;
 }
 
 tr:hover {
   background-color: #f5f5f528;
-} 
+}
 
 table {
-  table-layout:auto;
+  table-layout: auto;
 }
+
+@import "~bootstrap/scss/bootstrap";
