@@ -11,7 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Email non-disponible")
+ * @UniqueEntity(fields={"pseudo"}, message="Pseudo non-disponible")
  */
 class User implements UserInterface
 {
@@ -73,6 +74,11 @@ class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
+
+    /**
+     * @ORM\Column(type="string", length=50, unique=true)
+     */
+    private $pseudo;
 
     public function __construct()
     {
@@ -255,6 +261,18 @@ class User implements UserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
 
         return $this;
     }

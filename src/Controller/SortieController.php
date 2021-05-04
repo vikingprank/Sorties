@@ -65,7 +65,7 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
         $sortie -> setDateCreation(new \DateTime());
-        $prenomUserConnected = $this->getUser()->getPrenom();
+        $prenomUserConnected = $this->getUser()->getPseudo();
         $sortie -> setOrganisateur($prenomUserConnected);
 
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
@@ -151,7 +151,7 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
 
-        if ($user->getPrenom() != $sortie->getOrganisateur()) {
+        if ($user->getPseudo() != $sortie->getOrganisateur()) {
             $this -> addFlash ('warning', 'Tu ne peut pas modifier cette sortie!');
             //reaffichage du SELECT *
             $sorties = $sr->findAll();
