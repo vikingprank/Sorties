@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une sortie | {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1>Modification d'une sortie</h1>
+
+{{ form_start(sortieForm) }}
+{{ form_widget(sortieForm) }}
+<button>Sauvegarder les changements</button>
+{{ form_end(sortieForm) }}
+
+{% endblock %}

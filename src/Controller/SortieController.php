@@ -131,4 +131,39 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
     }
+    /**
+     * @Route("/sortie/modifier/{id}", name="sortie_modifier")
+     */
+    public function modifier($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em, Request $request): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        if ($user->getPrenom() != $sortie->getOrganisateur()) {
+            $this -> addFlash ('warning', 'Tu ne peut pas modifier cette sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        } else {
+        
+            $sortieForm = $this -> createForm(SortieType::class, $sortie);
+            $sortieForm -> handleRequest($request);
+            
+            if ($sortieForm->isSubmitted()) {
+                $em->persist($sortie);
+                $em->flush();
+                $this -> addFlash ('succes', 'Sortie mis à jour!');
+                return $this -> redirectToRoute('main_home');
+            }
+
+            return $this->render('sortie/modifier.html.twig', ["sortie"=>$sortie, "sortieForm" => $sortieForm->createView()]);
+        }
+
+
+    }
 }
