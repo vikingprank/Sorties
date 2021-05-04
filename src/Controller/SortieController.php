@@ -50,6 +50,15 @@ class SortieController extends AbstractController
         return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
     }
     /**
+     * @Route("/sortie/detail/{id}", name="sortie_detail")
+     */
+    public function detail($id, SortieRepository $sr): Response
+    {
+        $sortie = $sr->find($id);
+
+        return $this->render('sortie/detail.html.twig', ["sortie" => $sortie]);
+    }
+    /**
      * @Route("/sortie/create", name="sortie_create")
      */
     public function create(EntityManagerInterface $em, Request $request): Response

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une sortie | {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1>Detail d'une sortie</h1>
+<article>
+<p>Sortie: {{sortie.nom}}</p>
+<p>Date de la Sortie: {{sortie.dateSortie|date("d/m/Y")}}</p>
+<p>Date de fin d'Inscription: {{sortie.dateFinInscription|date("d/m/Y")}}</p>
+<p>Nombre de participants: {{sortie.participants|length}}/{{sortie.nombrePlaces}}</p>
+<p>Organisa(teur/trice): {{sortie.organisateur}}</p>
+<p>Etat actuelle: {{sortie.etat.label}}</p>
+<p>Description: {{sortie.description}}</p>
+<p>Liste des participants: </p>
+<ul>
+{% for participant in sortie.participants %}
+  <li>{{participant.prenom}}</li>
+{% endfor %}
+</ul>
+</article>
+
+
+{% endblock %}
