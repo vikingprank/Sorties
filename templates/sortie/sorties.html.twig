@@ -24,7 +24,7 @@
       <td>{{sortie.nom}}</td>
       <td>{{sortie.dateSortie|date("d/m/Y")}}</td>
       <td>{{sortie.dateFinInscription|date("d/m/Y")}}</td>
-      <td>{{sortie.nombrePlaces}}</td>
+      <td>{{sortie.participants|length}}/{{sortie.nombrePlaces}}</td>
       <td>{{sortie.organisateur}}</td>
       <td>{{sortie.etat.label}}</td>
       <td>
