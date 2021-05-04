@@ -31,7 +31,6 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
         $sortie -> setDateCreation(new \DateTime());
-        //$sortie -> setEtat(1);
 
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
         $sortieForm -> handleRequest($request);
@@ -56,10 +55,15 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
 
-        $sortie->getParticipants()->add($user);
-        $user->getSorties()->add($sortie);
-
-        $em->flush();
+        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user)) {
+            $sortie->getParticipants()->add($user);
+            $user->getSorties()->add($sortie);
+            $em->flush();
+        } else {
+            $this -> addFlash ('warning', 'Tu participes déjà à cette sortie!');
+            $sorties = $sr->findAll();
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+        }
 
         $this -> addFlash ('succes', 'Tu participes à la sortie!');
         //reaffichage du SELECT *
@@ -76,11 +80,16 @@ class SortieController extends AbstractController
 
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
-
-        $sortie->removeParticipant($user);
-        $user->removeSorty($sortie);
-
-        $em->flush();
+        
+        if ($user->getSorties()->contains($sortie) && $sortie->getParticipants()->contains($user)) {
+            $sortie->removeParticipant($user);
+            $user->removeSorty($sortie); 
+            $em->flush();
+        } else {
+            $this -> addFlash ('warning', 'Tu ne peut pas de desister si tu ne participes pas!');
+            $sorties = $sr->findAll();
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties]);
+        }
         
         $this -> addFlash ('succes', 'Dommage que tu ne puisse pas venir!');
         //reaffichage du SELECT *

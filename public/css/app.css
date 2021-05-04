@@ -67,10 +67,20 @@ nav li {
   background-color: greenyellow;
   color: black;
   padding: 20px;
+  border-radius: 10px;
 }
 
+.alert-warning {
+  background-color: rgb(233, 235, 145);
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+}
 .alert-danger {
   background-color: darkred;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 th, td {
