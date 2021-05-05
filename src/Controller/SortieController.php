@@ -7,8 +7,10 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SortieType;
 use App\Repository\CampusRepository;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
+use App\Tools\UpdateEtat;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -205,5 +207,37 @@ class SortieController extends AbstractController
         }
 
 
+    }
+
+    /**
+     * @Route("/sortie/publier/{id}", name="sortie_publier")
+     */
+    public function publier($id, UpdateEtat $ue, EtatRepository $er, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        if ($user->getPseudo() != $sortie->getOrganisateur()) {
+            $this -> addFlash ('warning', 'Tu ne peut pas publier cette sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        } else {
+        
+            $ue->publierSortie($sortie, $er);
+            $em->flush();
+
+            $this -> addFlash ('succes', 'Les inscriptions sont maintenant ouvertes pour ta sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        }
     }
 }

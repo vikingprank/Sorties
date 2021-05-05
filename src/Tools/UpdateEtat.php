@@ -1,6 +1,18 @@
 <?php
 namespace App\Tools;
 
+use App\Entity\Etat;
+use App\Entity\Sortie;
+use App\Repository\EtatRepository;
+
 class UpdateEtat {
-  
+  public function publierSortie(Sortie $sortie, EtatRepository $er){
+    $etat = new Etat();
+    //$etat->setLabel("Ouverte");
+    $etat = $er->findOneBy(['label'=>"Ouverte"]);
+    $sortie->setEtat($etat);
+    return $sortie;
+  }
+
 }
+
