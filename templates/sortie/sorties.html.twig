@@ -42,7 +42,11 @@
         {% if sortie in app.user.sorties %}
           <a href="{{ path('sortie_se_desister', {'id' : sortie.id}) }}">Se desister</a>
         {% else %}
+          {% if sortie.nombrePlaces == sortie.participants|length %}
+          Sortie Pleine!
+          {% else %}
           <a href="{{ path('sortie_participer', {'id' : sortie.id}) }}">Participer</a>
+          {% endif %}
         {% endif %}
       {% else %}
       <a href="{{ path('app_login') }}">Connecte-toi pour participer!</a>

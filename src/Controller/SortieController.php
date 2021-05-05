@@ -128,12 +128,12 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
 
-        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user)) {
+        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user) && count($sortie->getParticipants())<$sortie->getNombrePlaces()) {
             $sortie->getParticipants()->add($user);
             $user->getSorties()->add($sortie);
             $em->flush();
         } else {
-            $this -> addFlash ('warning', 'Tu participes déjà à cette sortie!');
+            $this -> addFlash ('warning', "Tu peut pas t'inscrire, plus de place ou tu est déjà inscrit...");
             $sorties = $sr->findAll();
             $campus = $cr->findAll();
 
