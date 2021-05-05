@@ -4,6 +4,17 @@
 
 {% block body %}
 
+<div class="container-fluid ">
+  <div>
+    <div> nom : {{ app.user.nom}}</div>
+    <div>prenom : {{app.user.prenom}}</div>
+    <div>email : {{app.user.email}}</div>
+    <div>telephone : {{app.user.telephone}}</div>
+    <div>
+      <a href={{ path('user_editprofile') }}> Modifier le profil</a>
+      <button type="button" class= "btn btn-secondary"> Modifier le mot de passe </button>
+    </div>
+</div>
 
 
 {% endblock %}
