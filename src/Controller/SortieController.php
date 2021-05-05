@@ -189,7 +189,7 @@ class SortieController extends AbstractController
         $user = $this->getUser();
 
         if ($user->getPseudo() != $sortie->getOrganisateur()) {
-            $this -> addFlash ('warning', 'Tu ne peut pas modifier cette sortie!');
+            $this -> addFlash ('warning', "Tu n'est pas l'oganisa(teur/trice), ne peut pas modifier cette sortie!");
             //reaffichage du SELECT *
             $sorties = $sr->findAll();
             $campus = $cr->findAll();
