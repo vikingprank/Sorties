@@ -50,6 +50,7 @@
       {% if app.user and app.user.pseudo == sortie.organisateur %}
       <a href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">Modifier</a>
       <a href="{{ path('sortie_publier', {'id' : sortie.id}) }}">Publier</a>
+      <a href="{{ path('sortie_annuler', {'id' : sortie.id}) }}">Annuler</a>
       <a href="{{ path('sortie_delete', {'id' : sortie.id}) }}">Supprimer</a>
       {% endif %}
       </td>

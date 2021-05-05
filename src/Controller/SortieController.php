@@ -240,4 +240,35 @@ class SortieController extends AbstractController
             return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
         }
     }
+    /**
+     * @Route("/sortie/annuler/{id}", name="sortie_annuler")
+     */
+    public function annuler($id, UpdateEtat $ue, EtatRepository $er, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+
+        if ($user->getPseudo() != $sortie->getOrganisateur()) {
+            $this -> addFlash ('warning', 'Tu ne peut pas annuler cette sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        } else {
+        
+            $ue->annulerSortie($sortie, $er);
+            $em->flush();
+
+            $this -> addFlash ('succes', 'La sortie est annulée!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        }
+    }
 }

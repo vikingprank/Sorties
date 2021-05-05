@@ -13,6 +13,12 @@ class UpdateEtat {
     $sortie->setEtat($etat);
     return $sortie;
   }
+  public function annulerSortie(Sortie $sortie, EtatRepository $er){
+    $etat = new Etat();
+    $etat = $er->findOneBy(['label'=>"Annulée"]);
+    $sortie->setEtat($etat);
+    return $sortie;
+  }
 
 }
 
