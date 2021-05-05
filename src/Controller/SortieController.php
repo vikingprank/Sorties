@@ -22,11 +22,15 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie", name="sortie_liste")
      */
-    public function sorties(SortieRepository $sr, CampusRepository $cr): Response
+    public function sorties(EntityManagerInterface $em, UpdateEtat $ue, SortieRepository $sr, CampusRepository $cr, EtatRepository $er): Response
     {
+        //AFFICHAGE DES SORTIES AVEC LE FITRE CAMPUS, MIS A JOUR DE L'ETAT ET REDIRECTION VERS SORTIES
         $sorties = $sr->findAll();
         $campus = $cr->findAll();
-
+        foreach ($sorties as $sortie) {
+            $ue->testDate($sortie, $er);
+        }
+        $em->flush();
         return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
     }
     /**

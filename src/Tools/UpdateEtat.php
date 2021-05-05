@@ -19,6 +19,28 @@ class UpdateEtat {
     $sortie->setEtat($etat);
     return $sortie;
   }
-
+  public function testDate(Sortie $sortie, EtatRepository $er){
+    $etat = new Etat();
+    $dateFinInscription = $sortie->getDateFinInscription();
+    $dateToday = new \DateTime();
+    $format = "d m Y";
+    $dateSortieSansHeure = date_format($sortie->getDateSortie(), $format);
+    $dateTodaySansHeure = date_format($dateToday, $format);
+    $dateSortie = $sortie->getDateSortie();
+    
+    if ($dateFinInscription<$dateToday) {
+      $etat = $er->findOneBy(['label'=>"Clôturée"]);
+      $sortie->setEtat($etat);
+    }
+    if ($dateSortie<$dateToday) {
+      $etat = $er->findOneBy(['label'=>"Passée"]);
+      $sortie->setEtat($etat);
+    }
+    if ($dateSortieSansHeure == $dateTodaySansHeure) {
+      $etat = $er->findOneBy(['label'=>"Activité en cours"]);
+      $sortie->setEtat($etat);
+    }
+    return $sortie;
+  }
 }
 
