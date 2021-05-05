@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditProfileType;
+use App\Tools\FileUploader;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +25,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/editprofil", name="user_editprofile")
      */
-    public function editProfile(Request $request)
+    public function editProfile(Request $request): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(EditProfileType::class, $user);
@@ -31,10 +33,25 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
+            $imageFile = $form->get('images')->getData();
+            foreach($imageFile as $image){
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('upload_directory'),
+                    $fichier
+                );
+                $user->setImage($fichier);
+            }
+            
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('user_profil');
         }
 
         return $this->render('user/editprofile.html.twig', [
