@@ -17,7 +17,7 @@ class EditProfileType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
-            ->add('campus')
+            
             ->add('Valider', SubmitType::class)
         ;
     }
