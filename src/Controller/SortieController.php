@@ -80,6 +80,37 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/create.html.twig', ["sortieForm" => $sortieForm->createView()]);
     }
+
+    /**
+     * @Route("/sortie/delete/{id}", name="sortie_delete")
+     */
+    public function delete($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em, Request $request): Response
+    {
+        $sortie = new Sortie();
+        $user = new User();
+
+        $sortie = $sr->findOneBy(['id'=>$id]);
+        $user = $this->getUser();
+        
+        if ($user->getPseudo() != $sortie->getOrganisateur()) {
+            $this -> addFlash ('warning', 'Tu ne peut pas supprimer cette sortie!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        } else {
+            $em->remove($sortie);
+            $em->flush();
+            $this -> addFlash ('succes', 'Sortie supprimée!');
+            //reaffichage du SELECT *
+            $sorties = $sr->findAll();
+            $campus = $cr->findAll();
+    
+            return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
+        }
+    }
+
     /**
      * @Route("/sortie/participer/{id}", name="sortie_participer")
      */
