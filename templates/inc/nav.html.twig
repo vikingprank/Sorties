@@ -4,6 +4,10 @@
 		<li><a href={{path('sortie_liste')}} title="Afficher les sorties">Toutes les sorties</a></li>
 		{% if app.user %}
 		<li><a href={{path('sortie_create')}} title="Créer une sortie">+Créer votre sortie</a></li>
+		<li><a href={{path('lieux_liste')}} title="Voir les lieux">Voir les lieux</a></li>
+		<li><a href={{path('villes_liste')}} title="Voir les villes">Voir les villes</a></li>
+		<li><a href={{path('lieu_create')}} title="Créer un lieu">Créer un lieu</a></li>
+		<li><a href={{path('ville_create')}} title="Créer une ville">Créer une ville</a></li>
 		{% endif %}
 		{% if app.user is empty %}
 		<li><a href={{path('app_register')}} title="Se créer un compte">Inscription</a></li>

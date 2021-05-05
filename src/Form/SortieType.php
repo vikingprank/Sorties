@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Entity\Campus;
+use App\Entity\Lieu;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,7 @@ class SortieType extends AbstractType
             //->add('organisateur')
             ->add('etat', EntityType::class, ['class'=>Etat::class, 'choice_label' => 'label'])
             ->add('campus', EntityType::class, ['class'=>Campus::class, 'choice_label' => 'nom'])
+            ->add('lieu', EntityType::class, ['class'=>Lieu::class, 'choice_label' => 'nom'])
         ;
     }
 

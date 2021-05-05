@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Villes | {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Code Postal</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for ville in villes %}
+        <tr>
+            <td>{{ville.id}}</td>
+            <td>{{ville.nom}}</td>
+            <td>{{ville.codePostal}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
