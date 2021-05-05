@@ -1,6 +1,6 @@
 <?php
 namespace App\Tools;
 
-class NombrePlaces {
+class UpdateEtat {
   
 }

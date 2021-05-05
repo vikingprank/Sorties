@@ -3,23 +3,13 @@
 {% block title %}Sorties | {{ parent() }}{% endblock %}
 
 {% block body %}
-<h2>Click sur le nom d'une sortie pour plus de détails!</h2>
 
-
-<label for="campus-select">Filter sur un campus</label>
-  <select name="campus" id="campus-select">
-      <option value="">--Liste des campus--</option>
-      {% for campus in campus %}
-      <option value=""{{ path('sortie_by_campus', {'id' : campus.id}) }}"">{{campus.nom}}</option>
-      {% endfor %}
-  </select>
-<input type="submit" value="Filtrer par ce campus">
-
-
+<p>Filtrer sur un campus:</p>
 {% for campus in campus %}
 <a href="{{ path('sortie_by_campus', {'id' : campus.id}) }}">{{campus.nom}}</a>
 {% endfor %}
 
+<p>Click sur le nom d'une sortie pour plus de détails!</p>
 <table>
   <thead>
     <tr>

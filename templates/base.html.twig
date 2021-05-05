@@ -13,6 +13,7 @@
         <header>
             <h1>
                 <a href="{{ path('main_home') }}"><img src="{{ asset('img/Sorties.jpg') }}" alt="Sorties!"></h1>
+            {% include "inc/nav.html.twig" %}
 
             {% for label, messages in app.flashes %} 
                 {% for message in messages %} 
@@ -20,7 +21,6 @@
                 {% endfor %} 
             {% endfor %}
 
-            {% include "inc/nav.html.twig" %}
         </header>
             {% block body %}{% endblock %}
             

@@ -38,7 +38,7 @@ class SortieController extends AbstractController
         $index = 0;
         foreach ($sorties as $sortie) {
             if ($sortie->getCampus()->getId() != $id) {
-                array_splice($sorties, $index, 1);
+                unset($sorties[$index]);
             }
             $index++;
         }
