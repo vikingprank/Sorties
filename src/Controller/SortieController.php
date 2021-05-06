@@ -124,7 +124,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/participer/{id}", name="sortie_participer")
      */
-    public function participer($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
+    public function participer($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em, EtatRepository $er): Response
     {
         $sortie = new Sortie();
         $user = new User();
@@ -132,12 +132,15 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
 
-        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user) && count($sortie->getParticipants())<$sortie->getNombrePlaces() && $sortie->getEtat() == "Ouverte") {
+        $etat = new Etat();
+        $etat = $er->findOneBy(['label'=>"Ouverte"]);
+
+        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user) && count($sortie->getParticipants())<$sortie->getNombrePlaces() && $sortie->getEtat() == $etat) {
             $sortie->getParticipants()->add($user);
             $user->getSorties()->add($sortie);
             $em->flush();
         } else {
-            $this -> addFlash ('warning', "Les inscriptions ne sont pas ouvertes, il n'y a plus de places ou tu est déjà inscrit...");
+            $this -> addFlash ('warning', "Les inscriptions ne sont pas ouvertes, il n'y a plus de places ou t'es déjà inscrit...");
             $sorties = $sr->findAll();
             $campus = $cr->findAll();
 
@@ -154,15 +157,18 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/se_desister/{id}", name="sortie_se_desister")
      */
-    public function seDesister($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em): Response
+    public function seDesister($id, SortieRepository $sr, CampusRepository $cr, EntityManagerInterface $em, EtatRepository $er): Response
     {
         $sortie = new Sortie();
         $user = new User();
 
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
+
+        $etat = new Etat();
+        $etat = $er->findOneBy(['label'=>"Ouverte"]);
         
-        if ($user->getSorties()->contains($sortie) && $sortie->getParticipants()->contains($user) && $sortie->getEtat() == "Ouverte") {
+        if ($user->getSorties()->contains($sortie) && $sortie->getParticipants()->contains($user) && $sortie->getEtat() == $etat) {
             $sortie->removeParticipant($user);
             $user->removeSorty($sortie); 
             $em->flush();
