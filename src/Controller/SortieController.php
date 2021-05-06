@@ -81,7 +81,7 @@ class SortieController extends AbstractController
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
         $sortieForm -> handleRequest($request);
 
-        if ($sortieForm->isSubmitted()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $em->persist($sortie);
             $em->flush();
             $this -> addFlash ('succes', 'Sortie créée!');
@@ -210,11 +210,8 @@ class SortieController extends AbstractController
                 $this -> addFlash ('succes', 'Sortie mis à jour!');
                 return $this -> redirectToRoute('main_home');
             }
-
             return $this->render('sortie/modifier.html.twig', ["sortie"=>$sortie, "sortieForm" => $sortieForm->createView()]);
         }
-
-
     }
 
     /**

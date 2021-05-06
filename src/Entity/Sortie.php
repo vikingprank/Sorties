@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,26 +22,41 @@ class Sortie
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Veuillez renseigner ce champ!")
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Le nom de la sortie peut faire au plus 50 caractères"
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=1000)
+     * @Assert\NotBlank(message="Veuillez renseigner ce champ!")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 1000,
+     *      minMessage = "La description doit faire au moins 5 caractères",
+     *      maxMessage = "La description peut faire au plus 1000 caractères"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("today", message="Veuillez choisir une date dans le futur")
      */
     private $dateSortie;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("today", message="Veuillez choisir une date dans le futur")
      */
     private $dateFinInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(1, message="Le nombre de participants doit être au moins 2")
      */
     private $nombrePlaces;
 
