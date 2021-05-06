@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LieuController extends AbstractController
 {
     /**
-     * @Route("/lieux", name="lieux_liste")
+     * @Route("/lieu", name="lieux_liste")
      */
     public function lieux(LieuRepository $lr): Response
     {
@@ -24,7 +24,7 @@ class LieuController extends AbstractController
 
 
     /**
-     * @Route("/lieux/create", name="lieu_create")
+     * @Route("/lieu/create", name="lieu_create")
      */
     public function create(EntityManagerInterface $em, Request $request): Response
     {
