@@ -1,28 +1,30 @@
-<nav>
-	<ul>
-		<li><a href={{path('main_home')}} title="Home">Home</a></li>
-		<li><a href={{path('sortie_liste')}} title="Afficher les sorties">Toutes les sorties</a></li>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+<div class="container-fluid">
+		<a class="navbar-brand" href={{path('main_home')}} title="Home">Home</a>
+		<a class="navbar-brand" href={{path('sortie_liste')}} title="Afficher les sorties">Toutes les sorties</a>
 		{% if app.user %}
-		<li><a href={{path('sortie_create')}} title="Créer une sortie">+Créer votre sortie</a></li>
-		<li><a href={{path('lieux_liste')}} title="Voir les lieux">Voir les lieux</a></li>
-		<li><a href={{path('lieu_create')}} title="Créer un lieu">Créer un lieu</a></li>
+		<a class="navbar-brand" href={{path('sortie_create')}} title="Créer une sortie">+Créer votre sortie</a>
+		<a class="navbar-brand" href={{path('lieux_liste')}} title="Voir les lieux">Voir les lieux</a>
+		<a class="navbar-brand" href={{path('lieu_create')}} title="Créer un lieu">Créer un lieu</a>
 			{% if is_granted('ROLE_ADMIN') %}
-			<li><a href={{path('admin_villes_liste')}} title="Voir les villes">Voir les villes</a></li>
-			<li><a href={{path('admin_ville_create')}} title="Créer une ville">Créer une ville</a></li>
+			<a class="navbar-brand" href={{path('admin_villes_liste')}} title="Voir les villes">Voir les villes</a>
+			<a class="navbar-brand" href={{path('admin_ville_create')}} title="Créer une ville">Créer une ville</a>
 			{% endif %}
 		{% endif %}
 		{% if app.user is empty %}
-		<li><a href={{path('app_register')}} title="Se créer un compte">Inscription</a></li>
-		<li><a href={{path('app_login')}} title="Se connecter à un compte existant">Connexion</a></li>
+		<a class="navbar-brand" href={{path('app_register')}} title="Se créer un compte">Inscription</a>
+		<a class="navbar-brand" href={{path('app_login')}} title="Se connecter à un compte existant">Connexion</a>
 		{% endif %}
 		{% if app.user %}
-        <li>
-          <a href="{{ path('app_logout') }}">Logout</a>
-				</li>
-        <li>
-          <a href="{{ path('user_profil') }}">Profil</a>
-				</li>
+        
+          <a class="navbar-brand" href="{{ path('app_logout') }}">Logout</a>
+				
+        
+          <a class="navbar-brand" href="{{ path('user_profil') }}">Profil</a>
+				
 		{% endif %}
-		<li><a href={{path('main_aboutUs')}} title="A propos de nous">Notre mission</a></li>
-	</ul>
+		<a class="navbar-brand" href={{path('main_aboutUs')}} title="A propos de nous">Notre mission</a>
+	</div>
 </nav>
+

@@ -10,11 +10,11 @@
     <div>prenom : {{app.user.prenom}}</div>
     <div>email : {{app.user.email}}</div>
     <div>telephone : {{app.user.telephone}}</div>
+     <img src="{{ asset('uploads/' ~ app.user.image)}}" alt="Image" width="150">
     <div>
       <a href={{ path('user_editprofile') }}> Modifier le profil</a>
       <button type="button" class= "btn btn-secondary"> Modifier le mot de passe </button>
     </div>
 </div>
-
 
 {% endblock %}
