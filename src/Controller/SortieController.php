@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SortieType;
@@ -67,12 +68,15 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie/create", name="sortie_create")
      */
-    public function create(EntityManagerInterface $em, Request $request): Response
+    public function create(EntityManagerInterface $em, Request $request, EtatRepository $er): Response
     {
         $sortie = new Sortie();
         $sortie -> setDateCreation(new \DateTime());
         $prenomUserConnected = $this->getUser()->getPseudo();
         $sortie -> setOrganisateur($prenomUserConnected);
+        $etat = new Etat();
+        $etat = $er->findOneBy(['label'=>"Créée"]);
+        $sortie->setEtat($etat);
 
         $sortieForm = $this -> createForm(SortieType::class, $sortie);
         $sortieForm -> handleRequest($request);
