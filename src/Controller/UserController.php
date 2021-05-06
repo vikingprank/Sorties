@@ -59,4 +59,6 @@ class UserController extends AbstractController
         ]);
     }
 
+    public function viewOtherProfile 
+
     }
