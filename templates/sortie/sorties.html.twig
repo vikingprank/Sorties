@@ -38,7 +38,7 @@
       <td>{{sortie.organisateur}}</td>
       <td>{{sortie.etat.label}}</td>
       <td>
-      {% if app.user %}
+      {% if app.user and sortie.etat.label == "Ouverte"%}
         {% if sortie in app.user.sorties %}
           <a href="{{ path('sortie_se_desister', {'id' : sortie.id}) }}">Se desister</a>
         {% else %}
@@ -49,7 +49,12 @@
           {% endif %}
         {% endif %}
       {% else %}
-      <a href="{{ path('app_login') }}">Connecte-toi pour participer!</a>
+        {% if app.user %}
+          Inscriptions fermées
+        {% else %}
+          <a href="{{ path('app_login') }}">Connecte-toi pour participer!</a>
+        {% endif %}
+
       {% endif %}
       {% if app.user and app.user.pseudo == sortie.organisateur %}
       <a href="{{ path('sortie_modifier', {'id' : sortie.id}) }}">Modifier</a>

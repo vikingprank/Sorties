@@ -132,12 +132,12 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
 
-        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user) && count($sortie->getParticipants())<$sortie->getNombrePlaces()) {
+        if (!$user->getSorties()->contains($sortie) && !$sortie->getParticipants()->contains($user) && count($sortie->getParticipants())<$sortie->getNombrePlaces() && $sortie->getEtat() == "Ouverte") {
             $sortie->getParticipants()->add($user);
             $user->getSorties()->add($sortie);
             $em->flush();
         } else {
-            $this -> addFlash ('warning', "Tu peut pas t'inscrire, plus de place ou tu est déjà inscrit...");
+            $this -> addFlash ('warning', "Les inscriptions ne sont pas ouvertes, il n'y a plus de places ou tu est déjà inscrit...");
             $sorties = $sr->findAll();
             $campus = $cr->findAll();
 
@@ -162,7 +162,7 @@ class SortieController extends AbstractController
         $sortie = $sr->findOneBy(['id'=>$id]);
         $user = $this->getUser();
         
-        if ($user->getSorties()->contains($sortie) && $sortie->getParticipants()->contains($user)) {
+        if ($user->getSorties()->contains($sortie) && $sortie->getParticipants()->contains($user) && $sortie->getEtat() == "Ouverte") {
             $sortie->removeParticipant($user);
             $user->removeSorty($sortie); 
             $em->flush();
