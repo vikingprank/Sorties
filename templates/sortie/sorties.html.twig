@@ -35,7 +35,7 @@
       <td>{{sortie.dateSortie|date("d/m/Y")}}</td>
       <td>{{sortie.dateFinInscription|date("d/m/Y")}}</td>
       <td>{{sortie.participants|length}}/{{sortie.nombrePlaces}}</td>
-      <td><a href="{{ path('view_other_profile', {'id' : sortie.organisateur}) }}">{{sortie.organisateur}}</td>
+      <td><a href="{{ path('view_other_profile', {'pseudo' : sortie.organisateur}) }}">{{sortie.organisateur}}</td>
       <td>{{sortie.etat.label}}</td>
       <td>
       {% if app.user and sortie.etat.label == "Ouverte"%}
