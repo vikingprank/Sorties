@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditProfileType;
+use App\Repository\UserRepository;
 use App\Tools\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,6 +60,14 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function viewOtherProfile 
-
+    /**
+     * @Route("/user/viewotherprofile/{pseudo}", name="view_other_profile")
+     */
+    public function viewOtherProfile ($pseudo, UserRepository $ur): Response
+    {
+        $user = $ur->findOneby(['pseudo' => $pseudo]);
+        
+        return $this->render('user/viewotherprofile.html.twig', ["user" => $user]);
     }
+
+}
