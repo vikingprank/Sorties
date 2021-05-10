@@ -5,14 +5,17 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Sortie;
+use App\Entity\SortieLike;
 use App\Entity\User;
 use App\Form\SortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\SortieLikeRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use App\Tools\UpdateEtat;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -281,5 +284,53 @@ class SortieController extends AbstractController
 
             return $this->render('sortie/sorties.html.twig', ["sorties"=>$sorties, "campus"=>$campus]);
         }
+    }
+    /**
+     * Permet de liker ou unliker
+     * 
+     * @Route("sortie/like/{id}", name="sortie_like")
+     *
+     * @param Sortie $sortie
+     * @param ObjectManager $mananger
+     * @param SortieLikeRepository $slr
+     * @return Response
+     */
+    public function like(Sortie $sortie, EntityManagerInterface $em, SortieLikeRepository $slr, SortieRepository $sr) : Response {   
+        
+        $user = $this->getUser();
+        //si on a pas d'utilisateur, au fait un return 403 et la fonction s'arrête là
+        
+        if (!$user) {
+            return $this->json(['code' =>'403', 'message' => 'Il faut être connecté'], 403);
+        }
+        if ($sortie->isLikedByUser($user))  {
+            $like = $slr->findOneBy([
+                'sortie' => $sortie,
+                'relation' => $user
+            ]);
+            //$em->remove($like);
+            $sortie->removeLike($like);
+            $user->removeLike($like);
+            $em->flush();    
+            return $this->json([
+                'code' =>'200', 
+                'message' => 'Like supprimé',
+                'likes' => $slr->count(['sortie' => $sortie])
+            ], 200);
+        }
+
+        $like = new SortieLike();
+        $like->setSortie($sortie)
+            ->setRelation($user);
+
+        $sortie->getLikes()->add($like);
+        $user->getLikes()->add($like);
+        $em->flush();
+
+        return $this->json([
+            'code' =>'200', 
+            'message' => 'Like ajouté',
+            'likes' => $slr->count(['sortie' => $sortie])
+        ], 200);
     }
 }

@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(#5f5b5b, #57585a);
+  background: linear-gradient(#1d1c1c, #2e2f30);
   background-attachment: fixed;
   color: #eee;
   font-family: "Poppins", serif;
@@ -10,9 +10,13 @@ body {
   margin: auto;
   padding: 5px;
 }
+nav a {
+  color: cornsilk;
+  flex-shrink: initial;
+}
 
 a {
-  color: inherit;
+  color: cornsilk;
   text-decoration: none;
 }
 
@@ -59,6 +63,7 @@ select {
 
 nav li {
   margin-right: 1rem;
+  color: #eee;
 }
 
 .wish-list {

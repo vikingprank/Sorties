@@ -23,6 +23,7 @@
       <th>Organisateur</th>
       <th>Etat</th>
       <th>Actions</th>
+      <th>Likes</th>
     </tr>
   </thead>
   <tbody>
@@ -63,8 +64,49 @@
       <a href="{{ path('sortie_delete', {'id' : sortie.id}) }}">Supprimer</a>
       {% endif %}
       </td>
+      <td><a href="{{ path('sortie_like', {'id': sortie.id}) }}" class="btn btn-link js-like">
+        <span class="js-likes">{{ sortie.likes | length }}</span>
+        {% if app.user and sortie.isLikedByUser(app.user) %}
+          <i class="fas fa-thumbs-up"></i>
+        {% else %}
+          <i class="far fa-thumbs-up"></i>
+        {% endif %}
+        <span class="js-label">J'aime</span></a>
+      </td>
     </tr>
 {% endfor %}
   </tbody>
 </table>
+{% endblock %}
+
+{% block javascripts %}
+  
+  <script>
+  document.querySelectorAll('a.js-like').forEach(function(link){
+    link.addEventListener('click', onClickBtnLike);
+  })
+
+  function onClickBtnLike(event){
+    event.preventDefault();
+    const url = this.href;
+    const spanCount = this.querySelector('span.js-likes');
+    const icone = this.querySelector('i');
+
+    axios.get(url).then(function(response){
+      console.log(response);
+      const likes = response.data.likes;
+      spanCount.textContent = likes; 
+
+      if(icone.classList.contains('fas')) {
+        icone.classList.replace('fas', 'far');
+      } else {
+        icone.classList.replace('far', 'fas');
+      }
+    }).catch(function(error){
+      if(error.response.status === 403)
+      {window.alert("Connectez-vous pour liker")}
+    });
+  }
+  </script>
+  
 {% endblock %}

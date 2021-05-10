@@ -93,9 +93,15 @@ class Sortie
      */
     private $lieu;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SortieLike::class, mappedBy="sortie", cascade={"persist"})
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,5 +251,48 @@ class Sortie
         $this->lieu = $lieu;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|SortieLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(SortieLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setSortie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(SortieLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getSortie() === $this) {
+                $like->setSortie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Permet de savoir si cette sortie est liké par un user
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isLikedByUser(User $user): bool {
+        foreach ($this->likes as $like) {
+            if($like->getRelation() === $user) return true;
+        }
+        return false;
     }
 }

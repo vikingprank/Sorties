@@ -85,9 +85,15 @@ class User implements UserInterface
      */
     private $image;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SortieLike::class, mappedBy="relation", orphanRemoval=true, cascade={"persist"})
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -286,6 +292,36 @@ class User implements UserInterface
     public function setImage($image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SortieLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(SortieLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setRelation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(SortieLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getRelation() === $this) {
+                $like->setRelation(null);
+            }
+        }
 
         return $this;
     }
